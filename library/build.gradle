@@ -1,0 +1,49 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
+
+ext {
+    libraryVersionCode = 1
+    libraryVersionName = "0.1.0"
+}
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
+
+    resourcePrefix 'npc_'
+
+    defaultConfig {
+        minSdkVersion 9
+        targetSdkVersion 25
+        versionCode libraryVersionCode
+        versionName libraryVersionName
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:preference-v7:25.3.1'
+    testCompile 'junit:junit:4.12'
+}
+
+publish {
+    userOrg = 'h6ah4i'
+    groupId = 'com.h6ah4i.android.widget'
+    artifactId = 'numberpickercompat'
+    uploadName = 'android-numberpickercompat'
+    publishVersion = libraryVersionName
+    desc = 'Backport Material Design NumberPicker for API level 9+ devices'
+    website = 'https://github.com/h6ah4i/android-numberpickercompat'
+}
