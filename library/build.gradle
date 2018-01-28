@@ -7,14 +7,14 @@ ext {
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.2"
 
     resourcePrefix 'npc_'
 
     defaultConfig {
-        minSdkVersion 9
-        targetSdkVersion 25
+        minSdkVersion 14
+        targetSdkVersion 27
         versionCode libraryVersionCode
         versionName libraryVersionName
 
@@ -30,12 +30,12 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:preference-v7:25.3.1'
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
+    implementation 'com.android.support:appcompat-v7:27.0.2'
 }
 
 publish {
@@ -44,6 +44,6 @@ publish {
     artifactId = 'numberpickercompat'
     uploadName = 'android-numberpickercompat'
     publishVersion = libraryVersionName
-    desc = 'Backport Material Design NumberPicker for API level 9+ devices'
+    desc = 'Backport Material Design NumberPicker for API level 14+ devices'
     website = 'https://github.com/h6ah4i/android-numberpickercompat'
 }
