@@ -1,6 +1,6 @@
 package com.h6ah4i.android.example.numberpickercompat;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.h6ah4i.android.widget.numberpickercompat.NumberPicker;

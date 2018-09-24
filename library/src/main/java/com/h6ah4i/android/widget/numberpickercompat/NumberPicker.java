@@ -16,6 +16,7 @@
  */
 package com.h6ah4i.android.widget.numberpickercompat;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -25,16 +26,6 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.CallSuper;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.IntDef;
-import android.support.annotation.LayoutRes;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.accessibility.AccessibilityNodeProviderCompat;
-import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.Spanned;
@@ -64,6 +55,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
+
+import androidx.annotation.CallSuper;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IntDef;
+import androidx.annotation.LayoutRes;
+import androidx.appcompat.widget.AppCompatEditText;
+import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeProviderCompat;
 
 /**
  * A widget that enables the user to select a number from a predefined range.
@@ -1460,6 +1462,7 @@ public class NumberPicker extends LinearLayoutCompat {
         return mAccessibilityNodeProviderCompat;
     }
 
+    @SuppressLint("NewApi")
     @Override
     public AccessibilityNodeProvider getAccessibilityNodeProvider() {
         return (AccessibilityNodeProvider) getAccessibilityNodeProviderCompat().getProvider();
@@ -1504,7 +1507,7 @@ public class NumberPicker extends LinearLayoutCompat {
             int minSize, int measuredSize, int measureSpec) {
         if (minSize != SIZE_UNSPECIFIED) {
             final int desiredWidth = Math.max(minSize, measuredSize);
-            return ViewCompat.resolveSizeAndState(desiredWidth, measureSpec, 0);
+            return resolveSizeAndState(desiredWidth, measureSpec, 0);
         } else {
             return measuredSize;
         }
