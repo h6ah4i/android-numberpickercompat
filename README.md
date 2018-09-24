@@ -23,7 +23,7 @@ Target platforms
 Latest version
 ---
 
-- Version 0.1.0  (June 4, 2017)   ([RELEASE NOTES](./RELEASE-NOTES.md))
+- Version 1.0.0  (September 25, 2018)   ([RELEASE NOTES](./RELEASE-NOTES.md))
 
 Getting started
 ---
@@ -32,7 +32,7 @@ This library is published on jCenter. Just add these lines to `build.gradle`.
 
 ```gradle
 dependencies {
-    compile 'com.h6ah4i.android.widget:numberpickercompat:0.1.0'
+    compile 'com.h6ah4i.android.widget:numberpickercompat:1.0.0'
 }
 ```
 
