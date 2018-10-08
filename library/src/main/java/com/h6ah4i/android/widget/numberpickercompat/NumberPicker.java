@@ -60,6 +60,8 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.core.content.ContextCompat;
@@ -200,6 +202,7 @@ public class NumberPicker extends LinearLayoutCompat {
      * -@hide
      * @return Two digit formatter
      */
+    @NonNull
     public static final Formatter getTwoDigitFormatter() {
         return sTwoDigitFormatter;
     }
@@ -434,7 +437,7 @@ public class NumberPicker extends LinearLayoutCompat {
          * @param oldVal The previous value.
          * @param newVal The new value.
          */
-        void onValueChange(NumberPicker picker, int oldVal, int newVal);
+        void onValueChange(@NonNull NumberPicker picker, int oldVal, int newVal);
     }
 
     /**
@@ -471,7 +474,7 @@ public class NumberPicker extends LinearLayoutCompat {
          *                    {@link #SCROLL_STATE_TOUCH_SCROLL} or
          *                    {@link #SCROLL_STATE_IDLE}.
          */
-        public void onScrollStateChange(NumberPicker view, @ScrollState int scrollState);
+        public void onScrollStateChange(@NonNull NumberPicker view, @ScrollState int scrollState);
     }
 
     /**
@@ -484,7 +487,7 @@ public class NumberPicker extends LinearLayoutCompat {
          * @param value The currently selected value.
          * @return A formatted string representation.
          */
-        public String format(int value);
+        public @NonNull String format(int value);
     }
 
     /**
@@ -492,7 +495,7 @@ public class NumberPicker extends LinearLayoutCompat {
      *
      * @param context The application environment.
      */
-    public NumberPicker(Context context) {
+    public NumberPicker(@NonNull Context context) {
         this(context, null);
     }
 
@@ -502,7 +505,7 @@ public class NumberPicker extends LinearLayoutCompat {
      * @param context The application environment.
      * @param attrs   A collection of attributes.
      */
-    public NumberPicker(Context context, AttributeSet attrs) {
+    public NumberPicker(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, R.attr.npc_numberPickerStyle);
     }
 
@@ -515,7 +518,7 @@ public class NumberPicker extends LinearLayoutCompat {
      *                     reference to a style resource that supplies default values for
      *                     the view. Can be 0 to not look for defaults.
      */
-    public NumberPicker(Context context, AttributeSet attrs, int defStyleAttr) {
+    public NumberPicker(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs);
         // process style attributes
         final TypedArray attributesArray = context.obtainStyledAttributes(
@@ -1025,7 +1028,7 @@ public class NumberPicker extends LinearLayoutCompat {
      *
      * @param onValueChangedListener The listener.
      */
-    public void setOnValueChangedListener(OnValueChangeListener onValueChangedListener) {
+    public void setOnValueChangedListener(@Nullable OnValueChangeListener onValueChangedListener) {
         mOnValueChangeListener = onValueChangedListener;
     }
 
@@ -1034,7 +1037,7 @@ public class NumberPicker extends LinearLayoutCompat {
      *
      * @param onScrollListener The listener.
      */
-    public void setOnScrollListener(OnScrollListener onScrollListener) {
+    public void setOnScrollListener(@Nullable OnScrollListener onScrollListener) {
         mOnScrollListener = onScrollListener;
     }
 
@@ -1049,7 +1052,7 @@ public class NumberPicker extends LinearLayoutCompat {
      *                  {@link String#valueOf(int)} will be used.
      * @see #setDisplayedValues(String[])
      */
-    public void setFormatter(Formatter formatter) {
+    public void setFormatter(@Nullable Formatter formatter) {
         if (formatter == mFormatter) {
             return;
         }
@@ -1333,7 +1336,7 @@ public class NumberPicker extends LinearLayoutCompat {
      *                        must be equal to the range of selectable numbers which is equal to
      *                        {@link #getMaxValue()} - {@link #getMinValue()} + 1.
      */
-    public void setDisplayedValues(String[] displayedValues) {
+    public void setDisplayedValues(@Nullable String[] displayedValues) {
         if (mDisplayedValues == displayedValues) {
             return;
         }
@@ -1463,6 +1466,7 @@ public class NumberPicker extends LinearLayoutCompat {
     }
 
     @SuppressLint("NewApi")
+    @Nullable
     @Override
     public AccessibilityNodeProvider getAccessibilityNodeProvider() {
         return (AccessibilityNodeProvider) getAccessibilityNodeProviderCompat().getProvider();
