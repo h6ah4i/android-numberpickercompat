@@ -18,6 +18,7 @@ package com.h6ah4i.android.widget.numberpickercompat;
 
 import android.content.Context;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.ViewParentCompat;
@@ -29,6 +30,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
+import android.view.accessibility.AccessibilityRecord;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -319,28 +321,33 @@ class AccessibilityNodeProviderImpl extends AccessibilityNodeProviderCompat {
         AccessibilityManager accessibilityManager = (AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
         if (accessibilityManager.isEnabled()) {
             AccessibilityEvent event = AccessibilityEvent.obtain(eventType);
-            AccessibilityRecordCompat record = AccessibilityEventCompat.asRecord(event);
-            ViewCompat.onInitializeAccessibilityEvent(getInputText(), event);
-            ViewCompat.onPopulateAccessibilityEvent(getInputText(), event);
-            record.setSource(mNumberPicker, VIRTUAL_VIEW_ID_INPUT);
+            getInputText().onInitializeAccessibilityEvent(event);
+            getInputText().onPopulateAccessibilityEvent(event);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                event.setSource(mNumberPicker, VIRTUAL_VIEW_ID_INPUT);
+            } else {
+                event.setSource(mNumberPicker);
+            }
 
-            ViewParentCompat.requestSendAccessibilityEvent(mNumberPicker, mNumberPicker, event);
+            mNumberPicker.requestSendAccessibilityEvent(mNumberPicker, event);
         }
     }
 
-    private void sendAccessibilityEventForVirtualButton(int virtualViewId, int eventType,
-                                                        String text) {
+    private void sendAccessibilityEventForVirtualButton(int virtualViewId, int eventType, String text) {
         AccessibilityManager accessibilityManager = (AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
         if (accessibilityManager.isEnabled()) {
             AccessibilityEvent event = AccessibilityEvent.obtain(eventType);
-            AccessibilityRecordCompat record = AccessibilityEventCompat.asRecord(event);
             event.setPackageName(getContext().getPackageName());
-            record.setClassName(Button.class.getName());
-            record.getText().add(text);
-            record.setEnabled(isEnabled());
-            record.setSource(mNumberPicker, virtualViewId);
+            event.setClassName(Button.class.getName());
+            event.getText().add(text);
+            event.setEnabled(isEnabled());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                event.setSource(mNumberPicker, virtualViewId);
+            } else {
+                event.setSource(mNumberPicker);
+            }
 
-            ViewParentCompat.requestSendAccessibilityEvent(mNumberPicker, mNumberPicker, event);
+            mNumberPicker.requestSendAccessibilityEvent(mNumberPicker, event);
         }
     }
 
@@ -373,7 +380,7 @@ class AccessibilityNodeProviderImpl extends AccessibilityNodeProviderCompat {
             case VIRTUAL_VIEW_ID_INCREMENT: {
                 String text = getVirtualIncrementButtonText();
                 if (!TextUtils.isEmpty(text)
-                        && text.toString().toLowerCase().contains(searchedLowerCase)) {
+                        && text.toLowerCase().contains(searchedLowerCase)) {
                     outResult.add(createAccessibilityNodeInfo(VIRTUAL_VIEW_ID_INCREMENT));
                 }
             }

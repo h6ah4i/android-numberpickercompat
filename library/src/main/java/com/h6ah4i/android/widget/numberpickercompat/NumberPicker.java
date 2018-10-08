@@ -176,6 +176,7 @@ public class NumberPicker extends LinearLayoutCompat {
             mZeroDigit = getZeroDigit(locale);
         }
 
+        @NonNull
         public String format(int value) {
             final Locale currentLocale = Locale.getDefault();
             if (mZeroDigit != getZeroDigit(currentLocale)) {
@@ -203,7 +204,7 @@ public class NumberPicker extends LinearLayoutCompat {
      * @return Two digit formatter
      */
     @NonNull
-    public static final Formatter getTwoDigitFormatter() {
+    public static Formatter getTwoDigitFormatter() {
         return sTwoDigitFormatter;
     }
 
@@ -1385,7 +1386,7 @@ public class NumberPicker extends LinearLayoutCompat {
     public void jumpDrawablesToCurrentState() {
         super.jumpDrawablesToCurrentState();
         if (mSelectionDivider != null) {
-            DrawableCompat.jumpToCurrentState(mSelectionDivider);
+            mSelectionDivider.jumpToCurrentState();
         }
     }
 
@@ -1913,6 +1914,7 @@ public class NumberPicker extends LinearLayoutCompat {
             return InputType.TYPE_CLASS_TEXT;
         }
 
+        @NonNull
         @Override
         protected char[] getAcceptedChars() {
             return DIGIT_CHARACTERS;
