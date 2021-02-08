@@ -3,7 +3,7 @@ NumberPickerCompat
 
 This library is a port of the [NumberPicker](https://developer.android.com/reference/android/widget/NumberPicker.html) widget of Android framework. The ported widget has been re-written with the support library features so it can provide the same Material Design look and feel for all devices.
 
-[ ![Download](https://api.bintray.com/packages/h6ah4i/maven/android-numberpickercompat/images/download.svg) ](https://bintray.com/h6ah4i/maven/android-numberpickercompat/_latestVersion)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.h6ah4i.android.widget/numberpickercompat/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.h6ah4i.android.widget/numberpickercompat)
 
 ---
 
@@ -28,11 +28,18 @@ Latest version
 Getting started
 ---
 
-This library is published on jCenter. Just add these lines to `build.gradle`.
+This library is published on Maven Central. Just add these lines to `build.gradle`.
 
-```gradle
+```diff
 dependencies {
     compile 'com.h6ah4i.android.widget:numberpickercompat:1.0.0'
+}
+repositories {
++     mavenCentral()
+}
+
+dependencies {
++     implementation 'com.h6ah4i.android.widget:numberpickercompat:1.0.0'
 }
 ```
 
