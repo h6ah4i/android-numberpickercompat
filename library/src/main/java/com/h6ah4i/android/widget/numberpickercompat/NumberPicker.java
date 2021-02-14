@@ -427,6 +427,9 @@ public class NumberPicker extends LinearLayoutCompat {
      */
     private boolean mHideWheelUntilFocused;
 
+    private InputTextFilter mInputTextFilter;
+    private char[] mAcceptedChars = DIGIT_CHARACTERS;
+
     /**
      * Interface to listen for changes of the current value.
      */
@@ -586,6 +589,7 @@ public class NumberPicker extends LinearLayoutCompat {
                 Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(layoutResId, this, true);
         // input text
+        mInputTextFilter = new InputTextFilter();
         mInputText = (EditText) findViewById(R.id.npc_numberpicker_input);
         mInputText.setOnFocusChangeListener(new OnFocusChangeListener() {
             public void onFocusChange(View v, boolean hasFocus) {
@@ -597,9 +601,7 @@ public class NumberPicker extends LinearLayoutCompat {
                 }
             }
         });
-        mInputText.setFilters(new InputFilter[]{
-                new InputTextFilter()
-        });
+        mInputText.setFilters(new InputFilter[]{ mInputTextFilter });
         mInputText.setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -611,7 +613,7 @@ public class NumberPicker extends LinearLayoutCompat {
                 return false;
             }
         });
-        mInputText.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+        mInputText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
         mInputText.setImeOptions(EditorInfo.IME_ACTION_DONE);
         // initialize constants
         ViewConfiguration configuration = ViewConfiguration.get(context);
@@ -1222,6 +1224,21 @@ public class NumberPicker extends LinearLayoutCompat {
         mWrapSelectorWheel = wrappingAllowed && mWrapSelectorWheelPreferred;
     }
 
+    private void handleNegativeValueRange() {
+        boolean negative = mMinValue < 0 || mMaxValue < 0;
+
+        mAcceptedChars = (negative) ? DIGIT_CHARACTERS_WITH_NEGATIVE_SIGN : DIGIT_CHARACTERS;
+
+        if (mDisplayedValues != null) {
+            // Allow text entry rather than strictly numeric entry.
+            mInputText.setRawInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        } else if (negative) {
+            mInputText.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_SIGNED);
+        } else {
+            mInputText.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+        }
+    }
+
     /**
      * Sets the speed at which the numbers be incremented and decremented when
      * the up and down buttons are long pressed respectively.
@@ -1268,13 +1285,11 @@ public class NumberPicker extends LinearLayoutCompat {
         if (mMinValue == minValue) {
             return;
         }
-        if (minValue < 0) {
-            throw new IllegalArgumentException("minValue must be >= 0");
-        }
         mMinValue = minValue;
         if (mMinValue > mValue) {
             mValue = mMinValue;
         }
+        handleNegativeValueRange();
         updateWrapSelectorWheel();
         initializeSelectorWheelIndices();
         updateInputTextView();
@@ -1305,13 +1320,11 @@ public class NumberPicker extends LinearLayoutCompat {
         if (mMaxValue == maxValue) {
             return;
         }
-        if (maxValue < 0) {
-            throw new IllegalArgumentException("maxValue must be >= 0");
-        }
         mMaxValue = maxValue;
         if (mMaxValue < mValue) {
             mValue = mMaxValue;
         }
+        handleNegativeValueRange();
         updateWrapSelectorWheel();
         initializeSelectorWheelIndices();
         updateInputTextView();
@@ -1342,13 +1355,7 @@ public class NumberPicker extends LinearLayoutCompat {
             return;
         }
         mDisplayedValues = displayedValues;
-        if (mDisplayedValues != null) {
-            // Allow text entry rather than strictly numeric entry.
-            mInputText.setRawInputType(InputType.TYPE_CLASS_TEXT
-                    | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        } else {
-            mInputText.setRawInputType(InputType.TYPE_CLASS_NUMBER);
-        }
+        handleNegativeValueRange();
         updateInputTextView();
         initializeSelectorWheelIndices();
         tryComputeMaxWidth();
@@ -1903,6 +1910,16 @@ public class NumberPicker extends LinearLayoutCompat {
             , '\u0cef'
     };
 
+    private static final char[] DIGIT_CHARACTERS_WITH_NEGATIVE_SIGN = combineCharArray(DIGIT_CHARACTERS, new char[] { '-' });
+
+    public static char[] combineCharArray(char[] a, char[] b){
+        int length = a.length + b.length;
+        char[] result = new char[length];
+        System.arraycopy(a, 0, result, 0, a.length);
+        System.arraycopy(b, 0, result, a.length, b.length);
+        return result;
+    }
+
     /**
      * Filter for accepting only valid indices or prefixes of the string
      * representation of valid indices.
@@ -1917,7 +1934,7 @@ public class NumberPicker extends LinearLayoutCompat {
         @NonNull
         @Override
         protected char[] getAcceptedChars() {
-            return DIGIT_CHARACTERS;
+            return mAcceptedChars;
         }
 
         @Override
