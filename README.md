@@ -17,7 +17,7 @@ Screenshot
 Target platforms
 ---
 
-- API level 9 or later
+- API level 14 or later
 
 
 Latest version
