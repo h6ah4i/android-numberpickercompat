@@ -1,9 +1,12 @@
-apply plugin: 'com.android.library'
-apply plugin: 'guru.stefma.bintrayrelease'
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+    id 'signing'
+}
 
 ext {
-    libraryVersionCode = 3
-    libraryVersionName = "1.0.0"
+    libraryVersionCode = 4
+    libraryVersionName = "1.1.0-SNAPSHOT"
 }
 
 android {
@@ -37,12 +40,67 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.0'
 }
 
-group = 'com.h6ah4i.android.widget'
-version = libraryVersionName
-publish {
-    userOrg = 'h6ah4i'
-    artifactId = 'numberpickercompat'
-    uploadName = 'android-numberpickercompat'
-    desc = 'Backport Material Design NumberPicker for API level 14+ devices'
-    website = 'https://github.com/h6ah4i/android-numberpickercompat'
+afterEvaluate {
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                groupId = 'com.h6ah4i.android.widget'
+                artifactId = 'numberpickercompat'
+                version = libraryVersionName
+
+                from components.all
+
+                pom {
+                    name = 'NumberPickerPreferenceCompat'
+                    description = 'Backport Material Design NumberPicker for API level 14+ devices'
+                    url = 'https://github.com/h6ah4i/android-numberpickercompat'
+                    packaging = 'aar'
+                    licenses {
+                        license {
+                            name = 'The Apache License, Version 2.0'
+                            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                            distribution = 'repo'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'h6ah4i'
+                            name = 'Haruki Hasegawa'
+                        }
+                    }
+                    scm {
+                        connection = 'git:https://github.com/h6ah4i/android-numberpickercompat.git'
+                        developerConnection = 'git:git@github.com:h6ah4i/android-numberpickercompat.git'
+                        url = 'https://github.com/h6ah4i/android-numberpickercompat'
+                    }
+                }
+            }
+        }
+        repositories {
+            maven {
+                name = 'BuildDir'
+
+                def releasesRepoUrl = "$buildDir/repos/releases"
+                def snapshotsRepoUrl = "$buildDir/repos/snapshots"
+                url = libraryVersionName.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            }
+
+            maven {
+                name = 'MavenCentral'
+
+                def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+                def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
+                url = libraryVersionName.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+                credentials {
+                    username = "${project.SONATYPE_NEXUS_USERNAME}"
+                    password = "${project.SONATYPE_NEXUS_PASSWORD}"
+                }
+            }
+        }
+    }
+
+    signing {
+        useGpgCmd()
+        sign publishing.publications.mavenJava
+    }
 }
