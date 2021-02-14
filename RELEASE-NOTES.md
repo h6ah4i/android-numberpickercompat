@@ -1,3 +1,6 @@
+## 1.1.0
+- Change to accept negative numbers
+
 ## 1.0.0
 - Migrated to AndroidX
 
