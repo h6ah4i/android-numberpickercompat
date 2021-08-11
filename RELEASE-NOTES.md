@@ -1,3 +1,6 @@
+## 1.1.1
+- Remove extra attributes from the `<application />` tag
+
 ## 1.1.0
 - Change to accept negative numbers
 
