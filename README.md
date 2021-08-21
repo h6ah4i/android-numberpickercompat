@@ -31,9 +31,6 @@ Getting started
 This library is published on Maven Central. Just add these lines to `build.gradle`.
 
 ```diff
-dependencies {
-    compile 'com.h6ah4i.android.widget:numberpickercompat:1.1.1'
-}
 repositories {
 +     mavenCentral()
 }
