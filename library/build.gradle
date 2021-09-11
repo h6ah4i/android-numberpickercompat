@@ -92,9 +92,12 @@ afterEvaluate {
                 def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
                 def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots"
                 url = libraryVersionName.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+
                 credentials {
-                    username = "${project.SONATYPE_NEXUS_USERNAME}"
-                    password = "${project.SONATYPE_NEXUS_PASSWORD}"
+                    if (project.hasProperty('mavenCentralUsername') && project.hasProperty("mavenCentralPassword")) {
+                        username = "$mavenCentralUsername"
+                        password = "$mavenCentralPassword"
+                    }
                 }
             }
         }
