@@ -1457,10 +1457,9 @@ public class NumberPicker extends LinearLayoutCompat {
         super.onInitializeAccessibilityEvent(event);
         event.setClassName(NumberPicker.class.getName());
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            event.setScrollable(true);
-            event.setScrollY((mMinValue + mValue) * mSelectorElementHeight);
-        }
+        event.setScrollable(true);
+        event.setScrollY((mMinValue + mValue) * mSelectorElementHeight);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
             event.setMaxScrollY((mMaxValue - mMinValue) * mSelectorElementHeight);
         }
