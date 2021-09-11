@@ -23,7 +23,7 @@ Target platforms
 Latest version
 ---
 
-- Version 1.1.1  (August 11, 2021)   ([RELEASE NOTES](./RELEASE-NOTES.md))
+- Version 1.1.2  (September 11, 2021)   ([RELEASE NOTES](./RELEASE-NOTES.md))
 
 Getting started
 ---
@@ -36,7 +36,7 @@ repositories {
 }
 
 dependencies {
-+     implementation 'com.h6ah4i.android.widget:numberpickercompat:1.1.1'
++     implementation 'com.h6ah4i.android.widget:numberpickercompat:1.1.2'
 }
 ```
 

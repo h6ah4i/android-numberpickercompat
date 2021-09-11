@@ -1,3 +1,7 @@
+## 1.1.2
+- Change `androidx.appcompat:appcompat` module dependency type to `api`
+- Bump AppCompat version to v1.3.1
+
 ## 1.1.1
 - Remove extra attributes from the `<application />` tag
 
