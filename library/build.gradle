@@ -5,21 +5,17 @@ plugins {
 }
 
 ext {
-    libraryVersionCode = 5
     libraryVersionName = "1.1.1"
 }
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "29.0.3"
 
     resourcePrefix 'npc_'
 
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 30
-        versionCode libraryVersionCode
-        versionName libraryVersionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
